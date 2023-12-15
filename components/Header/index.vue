@@ -1,40 +1,49 @@
 <template>
     <div class="headerMain flex mg-l-20 mg-r-20">
         <div class="left flex1">
+            <div class="logo">
+                Page visits: {{ data }}
+                <!-- <span class="font-medium">{{ 'company?.entName' }}</span> -->
+                <!-- <img src="~/assets/images/header/logo.svg" class="logo"> -->
+                <!-- <span class="member">{{ 'data' }}</span> -->
+            </div>
         </div>
         <div class="right"></div>
     </div>
 </template>
 <script setup>
 import { parseCookie } from '@/utils/tokenOperate'
+import { getCompanyInfo } from '@/api'
+// import { ssrGetData } from '@/http/server'
 import http from '@/http'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/store'
 const userStore = useUserStore()
+const nuxtApp = useNuxtApp()
 onBeforeMount(() => {
+    console.log(nuxtApp.payload.data)
     // 获取公司信息
     // let res = userStore.getCompanyInfo();
 })
-/**
- * @method useAsyncData
- * 服务端渲染时使用的 API
- */
-const { data } = useAsyncData('http://api.szpt.baiten.cn/com/api/comm/getlogininformation', () => {
+
+const {data} = await useAsyncData('aaaData', async () => {
     const cookies = useRequestHeaders(['cookie'])
-    if (cookies.cookie.indexOf('token') > -1) {
-        let cookieObj = parseCookie(cookies.cookie)
-        return cookieObj.token
+    let cookieObj = parseCookie(cookies.cookie)
+    if(cookieObj) {
+        let res = await getCompanyInfo({}, {
+            headers: {
+                Authorization: 'Bearer ' + cookieObj.token,
+            }
+        })
+        return JSON.stringify(res)
     }
 })
-console.log(data.value, 'MMM');
-/**
- * 此方法只会在服务器端执行
- */
-useFetch(() => {
-
-});
 </script>
 
 <style lang="scss" scoped>
-// .headerMain {}
+.headerMain {
+    .logo {
+        height: 56px;
+    }
+}
 </style>

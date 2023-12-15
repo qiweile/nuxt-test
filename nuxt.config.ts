@@ -36,6 +36,7 @@ export default defineNuxtConfig({
         '@/assets/iconfont/iconfont.css',
         '@/assets/styles/global.scss',
     ],
+
     devServer: {
         port: 3001, // 默认: 3000,
     }
