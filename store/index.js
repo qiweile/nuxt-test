@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 // import http from '@/http'
-import { getCompanyInfo } from '~/api';
+import useSsrGet from '@/hooks/useSsrHook'
 export const useUserStore = defineStore('user', {
     state: () => ({
         phoneNumber: null,
@@ -24,9 +24,8 @@ export const useUserStore = defineStore('user', {
             // console.log(pending.value);
             // this.user = data.value
         },
-        async getCompanyInfo() {
-            let { code, data, message, pending, refresh } = await getCompanyInfo()
-            console.log(code, data, message, pending, refresh);
+        getCompanyInfo(data) {
+            this.companyInfo = data
         }
     },
 });

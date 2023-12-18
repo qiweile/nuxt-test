@@ -2,42 +2,30 @@
     <div class="headerMain flex mg-l-20 mg-r-20">
         <div class="left flex1">
             <div class="logo">
-                Page visits: {{ data }}
-                <!-- <span class="font-medium">{{ 'company?.entName' }}</span> -->
-                <!-- <img src="~/assets/images/header/logo.svg" class="logo"> -->
-                <!-- <span class="member">{{ 'data' }}</span> -->
+                <span class="font-medium">{{ companyData.data.entName }}</span>
+                <span class="member">{{ 'data' }}</span>
             </div>
         </div>
         <div class="right"></div>
     </div>
 </template>
 <script setup>
-import { parseCookie } from '@/utils/tokenOperate'
 import { getCompanyInfo } from '@/api'
-// import { ssrGetData } from '@/http/server'
-import http from '@/http'
-import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/store'
+import useSsrGet from '@/hooks/useSsrHook'
 const userStore = useUserStore()
 const nuxtApp = useNuxtApp()
 onBeforeMount(() => {
-    console.log(nuxtApp.payload.data)
-    // 获取公司信息
-    // let res = userStore.getCompanyInfo();
+    let {data} = JSON.parse(nuxtApp.payload.data.companyInfo)
+    // 把公司信息本地缓存
+    userStore.getCompanyInfo(data);
 })
+/**
+ * 获取功能信息
+ */
+const companyInfo = await useSsrGet('companyInfo', getCompanyInfo)
+const companyData = JSON.parse(companyInfo.data.value)
 
-const {data} = await useAsyncData('aaaData', async () => {
-    const cookies = useRequestHeaders(['cookie'])
-    let cookieObj = parseCookie(cookies.cookie)
-    if(cookieObj) {
-        let res = await getCompanyInfo({}, {
-            headers: {
-                Authorization: 'Bearer ' + cookieObj.token,
-            }
-        })
-        return JSON.stringify(res)
-    }
-})
 </script>
 
 <style lang="scss" scoped>
