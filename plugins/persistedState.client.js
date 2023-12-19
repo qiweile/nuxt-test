@@ -13,7 +13,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     // });
     // 监听状态变化并更新 localStorage
     userStore.$subscribe((mutation, state) => {
-        console.log('监听状态变化并更新', state);
+        // console.log('监听状态变化并更新', state);
         localStorage.setItem('userState', JSON.stringify(state));
     });
 });

@@ -5,24 +5,29 @@
   </p>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/store'
 import { ElMessage } from 'element-plus'
-const userData = inject('userData')
-const current = ref<any>('')
+// const userData = inject('userData')
+const current = ref('')
 const router = useRouter()
-function handleLink() {
-    if (!userData.value.userMobile) {
-        ElMessage.error('请完善手机号码！')
-        setTimeout(() => {
-            location.href = import.meta.env.VITE_ENT_HOST + '/userCenter/accountInfo'
-        }, 1000);
-        return
-    }
-//   router.push({ name: 'entService' })
-    location.href = import.meta.env.VITE_ENT_HOST + '/entService/market'
-}
+
+const userStore = useUserStore()
+
+const userData = computed(() => userStore.userData )
+// function handleLink() {
+//     if (!userData.value.userMobile) {
+//         ElMessage.error('请完善手机号码！')
+//         setTimeout(() => {
+//             location.href = import.meta.env.VITE_ENT_HOST + '/userCenter/accountInfo'
+//         }, 1000);
+//         return
+//     }
+// //   router.push({ name: 'entService' })
+//     location.href = import.meta.env.VITE_ENT_HOST + '/entService/market'
+// }
 </script>
 
 <style scoped>

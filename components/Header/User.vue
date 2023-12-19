@@ -1,36 +1,33 @@
 <template>
     <el-popover v-if="isReady" placement="bottom" :width="240" trigger="hover" popper-class="user-poppover" ref="6">
         <div class="top">
-            <p class="entname">{{ companyInfo?.entName }}</p>
+            <p class="entname">{{ company.entName }}</p>
             <p class="font-medium user-info">
-                <span class="nick-name">{{ userInfo?.nickName }}</span>
+                <span class="nick-name">{{ userData.userPost }}</span>
                 <span style="margin:0 5px;">|</span>
                 <span class="mobile">{{ userData?.userMobile }}</span>
             </p>
         </div>
         <div class="user-list">
             <div class="item font-medium" @click="toUrl('/userCenter/accountInfo')">
-                <img src="~/assets/images/header/user12x.png" alt="">
                 个人中心
             </div>
             <div class="divider"></div>
             <div class="item font-medium" @click="logout">
-                <img src="~/assets/images/header/logout2x.png" alt="">
                 退出
             </div>
         </div>
         <template #reference>
-            <span class="icon-container">
-                <img src="~/assets/images/header/user2x.png" style="width:14px;height:16px;" alt="">
-            </span>
+            <i class="iconfont icon-shujushouquan"></i>
         </template>
     </el-popover>
 </template>
 
 <script setup>
-import { useUserStore } from '~/store/user'
+import { useUserStore } from '@/store'
 import { storeToRefs } from 'pinia'
 
+const userStore = useUserStore()
 const props = defineProps({
     userData: {
         type: Object,
@@ -38,28 +35,11 @@ const props = defineProps({
     }
 })
 
-
-
-const visible = ref(false)
-const userStore = useUserStore()
-// debugger
-onBeforeMount(() => {
-    userStore.getInfo()
-    userStore.getCompanyInfo()
-})
-const { companyInfo, userInfo } = storeToRefs(userStore)
-const company = computed(() => {
-    return companyInfo.value
-})
-
-const router = useRouter()
+const { companyInfo } = storeToRefs(userStore)
+const company = computed(() => companyInfo.value)
 const logout = async function () {
-    await userStore.logout()
     location.href = '/login'
-    // router.push(`/login`)
 }
-
-
 const isReady = ref(false)
 onMounted(() => {
     isReady.value = true

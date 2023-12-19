@@ -21,23 +21,24 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import jiansuo2x from "~/assets/images/header/jiansuo2x.png"
-import jiansuoqiye2x from "~/assets/images/header/jiansuoqiye2x.png"
-import qiyezhongxin2x from "~/assets/images/header/qiyezhongxin2x.png"
-import chanyelian2x from "~/assets/images/header/chanyelian2x.png"
-import useCheckAuth from '~/api/useCheckAuth'
+
 import { useRouter } from 'vue-router'
 const router = useRouter()
-const { checkAuth } = useCheckAuth()
 const isReady = ref(false)
-const userData = inject('userData')
+
+const props = defineProps({
+    userData: {
+        type: Object,
+        default: () => {}
+    }
+})
+
 onMounted(() => {
     isReady.value = true
 })
 function handleLink(item) {
-    if (!userData.value.userMobile) {
+    if (!props.userData.userMobile) {
         ElMessage.error('请完善手机号码！')
         location.href = import.meta.env.VITE_ENT_HOST + '/userCenter/accountInfo'
         return
@@ -47,24 +48,19 @@ function handleLink(item) {
     } else if (item.link) {
         location.href = item.link
     }
-    // if (checkAuth(item.checkName)) {
-    //     console.log(item.checkName,'LLL');
-    // } else {
-    //     ElMessage.error('服务未开通')
-    // }
 }
 const appList = ref([
     {
         title: '专利检索',
         desc: '1.9亿+全球专利要盖103个国家/地区',
-        icon: jiansuo2x,
+        icon: 'jiansuo2x',
         pathName: '/patsearch/patent-search-home',
         checkName: 'PAT_SEARCH'
     },
     {
         title: '企业检索',
         desc: '描绘中国创新型企业画像',
-        icon: jiansuoqiye2x,
+        icon: 'jiansuoqiye2x',
         // pathName: '/enterprise',
         link: import.meta.env.VITE_BASE_SO + '/enterprise',
         checkName: 'ENT_SEARCH'
@@ -72,7 +68,7 @@ const appList = ref([
     {
         title: '企业中心',
         desc: '管理知识产权、专利年费、专利动态',
-        icon: qiyezhongxin2x,
+        icon: 'qiyezhongxin2x',
         link: import.meta.env.VITE_ENT_HOST + '/entCenter/myCompany',
         // pathName: '/entCenter/myCompany',
         checkName: 'ENT_CENTER_MY'
@@ -80,7 +76,7 @@ const appList = ref([
     {
         title: '产业链',
         desc: '涵盖50+产业的核心企业、专利等资源',
-        icon: chanyelian2x,
+        icon: 'chanyelian2x',
         link: import.meta.env.VITE_ENT_HOST + '/industryChain/typeLib',
         // pathName: '/industryChain/typeLib',
         checkName: 'INDUSTRY_CHAIN'

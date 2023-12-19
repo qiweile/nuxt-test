@@ -1,5 +1,6 @@
 import { parseCookie } from '@/utils/tokenOperate'
-export default async function useSsrGet  (dName,api,apiParams={},apiOpt={}) {
+import { getUserInfo } from '@/api'
+export default async function useSsrGet(dName, api,apiParams = {}, apiOpt = {}, funOpt = {}) {
     const { data } = await useAsyncData(dName, async () => {
         const cookies = useRequestHeaders(['cookie'])
         let cookieObj = parseCookie(cookies.cookie)
@@ -12,7 +13,7 @@ export default async function useSsrGet  (dName,api,apiParams={},apiOpt={}) {
             })
             return JSON.stringify(res)
         }
-    })
+    }, funOpt)
     return {
         data
     };

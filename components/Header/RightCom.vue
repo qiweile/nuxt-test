@@ -2,48 +2,29 @@
     <div class="right-com">
         <Application :userData="userData" />
         <Service :userData="userData" />
-        <Online />
-        <Workspace />
         <div class="icon-list">
-            <!-- <History /> -->
-            <Message />
             <User :userData="userData" />
-            <Help />
         </div>
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import Service from './Service.vue'
-import Online from './Online.vue'
 import Application from './Application.vue'
-import Help from './Help.vue'
-import History from './History.vue'
-import Message from './Message.vue'
 import User from './User.vue'
-import Workspace from './Workspace.vue'
-import { getUserInfo } from '@/api/user'
-const userData = ref({})
+
+import { useUserStore } from '@/store'
+const userStore = useUserStore()
 onBeforeMount(() => {
-    getUserInfo().then(res => {
-        if (res.data) {
-            userData.value = res.data
-        }
-    }).catch( err => {
-        
-    })
+    // 用户信息本地缓存
+    userStore.getUserInfo();
 })
-provide('userData', userData)
+const userData = computed(() => userStore.userData)
+
 </script>
 
 <style scoped>
 .right-com {
-    /* display: flex;
-    line-height: 22px;
-    font-size: 14px;
-    color: #2b303d;
-    font-weight: 500;
-    font-family: Alibaba-PuHuiTi-Medium; */
     font-size: 14px;
     line-height: 22px;
     display: flex;
@@ -51,13 +32,6 @@ provide('userData', userData)
 }
 
 .right-com :deep( p) {
-    /* display: flex;
-    align-items: center;
-    margin-right: 8px;
-    padding: 0 12px;
-    cursor: pointer;
-    user-select: none; */
-
     display: flex;
     align-items: center;
     margin-right: 8px;

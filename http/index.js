@@ -8,7 +8,6 @@ class HttpRequest {
     request(url, method, data, options) {
         return new Promise(async (resolve, reject) => {
             const token = getToken() || '';
-            console.log('token-----',token);
             const newOptions = {
                 baseURL: BASE_URL,
                 method: method,

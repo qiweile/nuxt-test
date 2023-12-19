@@ -38,13 +38,6 @@ const autoColor = () => {
     color.value = str
 }
 
-// 获取数据
-const getData = () => {
-    // http
-}
-
-
-
 // 在子组件中定义的数据
 const num = useState('aotuNumber')
 /**
@@ -55,12 +48,6 @@ onMounted(() => {
     autoColor()
 })
 
-/**
- * 此方法只会在服务器端执行
- */
-useFetch( () => {
-    // useStore.login()
-});
 </script>
 
 <style lang="scss" scoped>

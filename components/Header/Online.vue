@@ -40,13 +40,13 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import useOnlineUser from '~/hooks/useOnlineUser'
-import useCheckAuth from '~/api/useCheckAuth'
+// import useOnlineUser from '~/hooks/useOnlineUser'
+// import useCheckAuth from '~/api/useCheckAuth'
 import dayjs from 'dayjs'
-const { userList } = useOnlineUser()
+// const { userList } = useOnlineUser()
 
 const router = useRouter()
-const { checkAuth } = useCheckAuth()
+// const { checkAuth } = useCheckAuth()
 const isReady = ref(false)
 onMounted(() => {
     isReady.value = true
